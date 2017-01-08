@@ -102,7 +102,10 @@ body {
     clear: both;
 }
 
-
+.links-container .navbar-link:active {
+    color: rgb(233,50,117);
+    background-color: white;
+}
 
 
 
