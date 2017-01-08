@@ -12,7 +12,7 @@ html {
 body {
     font-family: 'Open Sans';   /* sets our font to the "Open Sans" typeface */
     color: white;               /* sets the text color to white */
-    min-height: 100%            /* says the height of the body must be, at minimum 100% of the window */
+    min-height: 100%;            /* says the height of the body must be, at minimum 100% of the window */
 }
 
 
@@ -65,9 +65,18 @@ body {
     color: rgb(233,50,117);
 }
 
+.links-container .navbar-link:active {
+    color: rgb(233,50,117);
+    background-color: white;
+}
+
 .container {
     margin: 0 auto;
     max-width: 64rem;
+}
+
+.container.narrow {
+    max-width: 56rem;
 }
 
 /* Medium and small screens (640px) */
@@ -94,7 +103,7 @@ body {
 
 .clearfix::before,
 .clearfix::after {
-    content:" ";
+    content:"";
     display: table;
 }
 
@@ -102,10 +111,9 @@ body {
     clear: both;
 }
 
-.links-container .navbar-link:active {
-    color: rgb(233,50,117);
-    background-color: white;
-}
+
+
+
 
 
 
