@@ -30,6 +30,23 @@ var albumMarconi = {
     ]
 };
 
+//Assignment Album
+var albumSandler = {
+    title: 'What the Hell Happened to Me?',
+    artist: 'Adam Sandler',
+    label: 'Warner Bros.',
+    year: '1996',
+    albumArtUrl: 'assets/images/album_covers/sandler.jpg',
+    songs: [
+        { title: 'Ode to My Car', duration: '3:55' },
+        { title: 'The Goat', duration: '8:51' },
+        { title: 'The Chanukah Song', duration: '3:44' },
+        { title: 'Steve Polychronopolous', duration: '3:11' },
+        { title: 'Do It for Your Mama', duration: '5:23' }
+    ]
+};
+
+
 var createSongRow = function(songNumber, songName, songLength) {
     var template = 
           '<tr class="album-view-song-item">'
@@ -41,15 +58,16 @@ var createSongRow = function(songNumber, songName, songLength) {
     
     return template;
 };
-
-var setCurrentAlbum = function(album) {
-    //#1
+//Make variables global
     var albumTitle = document.getElementsByClassName('album-view-title')[0];
     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
     var albumImage = document.getElementsByClassName('album-cover-art')[0];
     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-    
+
+
+var setCurrentAlbum = function(album) {
+
     //#2
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
@@ -68,5 +86,23 @@ var setCurrentAlbum = function(album) {
 
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
-};
 
+    var albums = [albumMarconi, albumSandler, albumPicasso];
+    var index = 0;
+    
+    albumImage.addEventListener("click", function(event) {
+        setCurrentAlbum(albums[index]);
+        index++;
+        if (index == albums.length){
+            index = 0;
+        }
+    });
+};
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
