@@ -92,56 +92,71 @@ var trackIndex = function(album, song) {
     return album.songs.indexOf(song);
 };
 
-var nextSong = function() {
-    
-    var getLastSongNumber = function(index) {
-        return index == 0 ? currentAlbum.songs.length : index;
-    };
-    
-    var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    currentSongIndex++;
-    
-    if (currentSongIndex >= currentAlbum.songs.length) {
-        currentSongIndex = 0;
-    }
-    
-    // New current song
-    setSong(currentSongIndex + 1);
-    
-    // Update the player bar -- couldn't I have just called updatePlayerBarSong()?
-    $('.currently-playing .song-name').text(currentSongFromAlbum.title);
-    $('.currently-playing .artist-name').text(currentAlbum.artist);
-    $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
-    $('main-controls .play-pause').html(playerBarPauseButton);
-    
-    
-    var lastSongNumber = getLastSongNumber(currentSongIndex);
-    // I don't understand this part - if it's next why is it getting the current number and displaying the pause like it's current?
-    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
-    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
-    
-    $nextSongNumberCell.html(pauseButtonTemplate);
-    $lastSongNumberCell.html(lastSongNumber);
-    
-};
 
-var previousSong = function() {
-    //I see what this does, but why is the "last" song now in front?  What's the use in that?
-    //I tested with same function in nextSong, it displayed pause button on 4 numbers at a time and rotated those
-    var getLastSongNumber = function(index) {
-        return index ==(currentAlbum.songs.length - 1) ? 1 : index + 2;
-    };
+//take out for extra credit
+//var nextSong = function() {
+//    
+//    var getLastSongNumber = function(index) {
+//        return index == 0 ? currentAlbum.songs.length : index;
+//    };
+//    
+//    var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+//    currentSongIndex++;
+//    
+//    if (currentSongIndex >= currentAlbum.songs.length) {
+//        currentSongIndex = 0;
+//    }
+//    
+//    // New current song
+//    setSong(currentSongIndex + 1);
+//    
+//    // Update the player bar -- couldn't I have just called updatePlayerBarSong()?
+//    $('.currently-playing .song-name').text(currentSongFromAlbum.title);
+//    $('.currently-playing .artist-name').text(currentAlbum.artist);
+//    $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
+//    $('main-controls .play-pause').html(playerBarPauseButton);
+//    
+//    
+//    var lastSongNumber = getLastSongNumber(currentSongIndex);
+//    // I don't understand this part - if it's next why is it getting the current number and displaying the pause like it's current?
+//    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
+//    var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+//    
+//    $nextSongNumberCell.html(pauseButtonTemplate);
+//    $lastSongNumberCell.html(lastSongNumber);
+//    
+//};
+
+var prevNextSong = function(direction) {
+  
+    if (direction == "back") {
+        
+        var getLastSongNumber = function(index) {
+            return index ==(currentAlbum.songs.length - 1) ? 1 : index + 2;
+        };
+
+        var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+        currentSongIndex--;
+
+        if (currentSongIndex < 0) {
+            currentSongIndex = currentAlbum.songs.length - 1;
+        }
+    }
     
+    if (direction == "forward") {
+        var getLastSongNumber = function(index) {
+            return index == 0 ? currentAlbum.songs.length : index;
+        };
     
-    var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    currentSongIndex--;
-    
-    if (currentSongIndex < 0) {
-        currentSongIndex = currentAlbum.songs.length - 1;
+        var currentSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+        currentSongIndex++;
+
+        if (currentSongIndex >= currentAlbum.songs.length) {
+            currentSongIndex = 0;
+        }
     }
     
     setSong(currentSongIndex + 1);
-    
     // Update player bar
     $('.currently-playing .song-name').text(currentSongFromAlbum.title);
     $('.currently-playing .artist-name').text(currentAlbum.artist);
@@ -149,12 +164,18 @@ var previousSong = function() {
     $('main-controls .play-pause').html(playerBarPauseButton);
     
     var lastSongNumber = getLastSongNumber(currentSongIndex);
-    // Similarly, I don't understand this
     var $previousSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
     var $lastSongNumberCell = getSongNumberCell(lastSongNumber);
+    var $nextSongNumberCell = getSongNumberCell(currentlyPlayingSongNumber);
     
-    $previousSongNumberCell.html(pauseButtonTemplate);
-    $lastSongNumberCell.html(lastSongNumber);
+    if (direction === "back") {
+        $previousSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    }
+    if (direction === "forward") {
+        $nextSongNumberCell.html(pauseButtonTemplate);
+        $lastSongNumberCell.html(lastSongNumber);
+    }
 };
 
 
@@ -162,7 +183,6 @@ var updatePlayerBarSong = function() {
     $('.currently-playing .song-name').text(currentSongFromAlbum.title);
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
-    
     $('main-controls .play-pause').html(playerBarPauseButton);
 }
 
@@ -183,10 +203,11 @@ var $nextButton = $('.main-controls .next');
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
-    $previousButton.click(previousSong);
-    $nextButton.click(nextSong);
+    $previousButton.click(prevNextSong("back"));
+    $nextButton.click(prevNextSong("forward"));
 });
 
+//Extra credit function works when called manually, the buttons won't seem to call it, not sure why
 
 
 
